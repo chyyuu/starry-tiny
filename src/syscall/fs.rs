@@ -191,8 +191,62 @@ pub fn sys_fstat(fd: i32, statbuf: usize) -> isize {
 }
 
 /// Syscall: fcntl(2) - File control operations
-pub fn sys_fcntl(_fd: i32, _cmd: i32, _arg: usize) -> isize {
-    ENOSYS
+/// Supported commands:
+/// - F_GETFD: Get file descriptor flags
+/// - F_SETFD: Set file descriptor flags
+/// - F_GETFL: Get file status flags
+/// - F_SETFL: Set file status flags  
+/// - F_DUPFD: Duplicate file descriptor
+pub fn sys_fcntl(fd: i32, cmd: i32, arg: usize) -> isize {
+    const F_GETFD: i32 = 1;
+    const F_SETFD: i32 = 2;
+    const F_GETFL: i32 = 3;
+    const F_SETFL: i32 = 4;
+    const F_DUPFD: i32 = 0;
+    
+    // Verify fd is valid first
+    if fd_table::get_fd_flags(fd).is_none() && cmd != F_DUPFD {
+        return linux_err_to_isize(LinuxError::EBADF);
+    }
+    
+    match cmd {
+        F_GETFD => {
+            // Get file descriptor flags (FD_CLOEXEC etc.)
+            match fd_table::get_fd_flags(fd) {
+                Some(flags) => flags as isize,
+                None => linux_err_to_isize(LinuxError::EBADF),
+            }
+        }
+        F_SETFD => {
+            // Set file descriptor flags
+            if fd_table::set_fd_flags(fd, arg as u32) {
+                0
+            } else {
+                linux_err_to_isize(LinuxError::EBADF)
+            }
+        }
+        F_GETFL => {
+            // Get file status flags (O_APPEND, O_NONBLOCK etc.)
+            match fd_table::get_file_flags(fd) {
+                Some(flags) => flags as isize,
+                None => linux_err_to_isize(LinuxError::EBADF),
+            }
+        }
+        F_SETFL => {
+            // Set file status flags
+            if fd_table::set_file_flags(fd, arg as u32) {
+                0
+            } else {
+                linux_err_to_isize(LinuxError::EBADF)
+            }
+        }
+        F_DUPFD => {
+            // Duplicate file descriptor (not fully implemented due to File not being Clone-able)
+            // Would need Arc<File> or similar in production
+            ENOSYS
+        }
+        _ => ENOSYS,
+    }
 }
 
 /// Helper: Convert AxError to LinuxError and then to isize

@@ -19,7 +19,7 @@ fn get_fs_context() -> AxResult<FsContext> {
 }
 
 /// Load a null-terminated C string from user space
-fn load_user_cstring(ptr: usize) -> AxResult<String> {
+pub fn load_user_cstring(ptr: usize) -> AxResult<String> {
     if ptr == 0 {
         return Err(AxError::BadAddress);
     }

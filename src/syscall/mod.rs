@@ -3,6 +3,7 @@ pub mod fd_table;
 pub mod fs;
 pub mod mm;
 pub mod sync;
+pub mod sys;
 pub mod table;
 pub mod task;
 pub mod thread;

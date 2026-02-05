@@ -1,11 +1,16 @@
-use super::ENOSYS;
+use axtask::exit as ax_exit;
 
-pub fn sys_exit(_code: i32) -> isize {
-    // TODO: Implement exit
-    ENOSYS
+/// Syscall: exit(2) - Terminate the current task
+/// This function never returns
+pub fn sys_exit(code: i32) -> isize {
+    ax_exit(code as i32);
 }
 
-pub fn sys_exit_group(_code: i32) -> isize {
-    // TODO: Implement exit_group
-    ENOSYS
+/// Syscall: exit_group(2) - Terminate the entire process group
+/// In single-process mode, this is equivalent to exit()
+/// This function never returns
+pub fn sys_exit_group(code: i32) -> isize {
+    ax_exit(code as i32);
 }
+
+

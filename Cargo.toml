@@ -26,6 +26,13 @@ linux-raw-sys = { version = "0.11", default-features = false, features = [
 # Logging (optional)
 log = { version = "0.4", default-features = false }
 
+# StarryOS/arceos modules
+axfs = { path = "../StarryOS/arceos/modules/axfs" }
+axfs-ng-vfs = "0.1"
+axtask = { path = "../StarryOS/arceos/modules/axtask", features = ["multitask"] }
+axio = { version = "0.3.0-pre.1", default-features = false }
+axpoll = { version = "0.1", default-features = false }
+
 [profile.dev]
 opt-level = 0
 

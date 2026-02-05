@@ -1,6 +1,7 @@
 /// Stub file descriptor table
 /// 
-/// A minimal implementation until arceos integration is complete.
+/// A minimal implementation for the fd_table module until arceos integration is complete.
+/// Currently returns errors for file operations.
 
 pub fn add_file(_file: ()) -> i32 {
     -1

@@ -11,11 +11,7 @@ pub use dispatch::handle_syscall;
 
 pub const ENOSYS: isize = -38;
 
-use axerrno::{AxError, LinuxError};
-
-pub fn ax_err_to_isize(err: AxError) -> isize {
-	-(LinuxError::from(err) as i32 as isize)
-}
+use axerrno::LinuxError;
 
 pub fn linux_err_to_isize(err: LinuxError) -> isize {
 	-(err as i32 as isize)

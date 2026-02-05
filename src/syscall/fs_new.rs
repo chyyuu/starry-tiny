@@ -1,6 +1,7 @@
+use linux_raw_sys::general::{stat, O_APPEND, O_CREAT, O_RDONLY, O_TRUNC, O_WRONLY, S_IFREG};
 use axerrno::LinuxError;
 
-use super::{linux_err_to_isize, ENOSYS};
+use super::{fd_table, linux_err_to_isize, ENOSYS};
 
 pub const AT_FDCWD: isize = -100;
 

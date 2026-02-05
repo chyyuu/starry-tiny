@@ -43,6 +43,15 @@ Goal: combine existing arceos components into a macro-kernel that can run minima
 4. Wire stdout/stderr to console driver.
 5. Add fd table and per-process resources.
 
+## Concrete layout target
+See docs/component_layout.md for a concrete directory plan and integration order.
+
+## Configuration knobs
+- FS backend: ramfs or image-backed
+- MM: anonymous mmap only vs file-backed mmap
+- Task model: single process vs fork/exec later
+- Console: UART vs host console
+
 ## Initial configuration target
 - Single process, single address space
 - No fork/exec yet (just exec on boot)
